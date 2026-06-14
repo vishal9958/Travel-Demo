@@ -21,48 +21,67 @@ const locationDescriptions: Record<string, string> = {
 const continents = [
   // North America
   [
-    { lat: 70, lng: -160 }, { lat: 70, lng: -100 }, { lat: 50, lng: -60 },
-    { lat: 25, lng: -80 }, { lat: 15, lng: -90 }, { lat: 10, lng: -80 },
-    { lat: 7, lng: -80 }, { lat: 9, lng: -85 }, { lat: 20, lng: -105 },
+    { lat: 72, lng: -168 }, { lat: 70, lng: -120 }, { lat: 60, lng: -100 },
+    { lat: 65, lng: -80 }, { lat: 70, lng: -60 }, { lat: 50, lng: -50 },
+    { lat: 45, lng: -65 }, { lat: 25, lng: -80 }, { lat: 15, lng: -90 },
+    { lat: 8, lng: -77 }, { lat: 10, lng: -85 }, { lat: 20, lng: -105 },
     { lat: 30, lng: -115 }, { lat: 33, lng: -120 }, { lat: 45, lng: -125 },
-    { lat: 60, lng: -140 }, { lat: 65, lng: -160 }
+    { lat: 60, lng: -140 }, { lat: 65, lng: -168 }
   ],
   // South America
   [
-    { lat: 12, lng: -72 }, { lat: 10, lng: -60 }, { lat: -5, lng: -35 },
-    { lat: -20, lng: -40 }, { lat: -45, lng: -63 }, { lat: -55, lng: -68 },
-    { lat: -50, lng: -75 }, { lat: -30, lng: -72 }, { lat: -5, lng: -80 },
-    { lat: 5, lng: -75 }
+    { lat: 12, lng: -72 }, { lat: 10, lng: -50 }, { lat: -5, lng: -35 },
+    { lat: -10, lng: -38 }, { lat: -23, lng: -43 }, { lat: -45, lng: -63 },
+    { lat: -55, lng: -68 }, { lat: -50, lng: -75 }, { lat: -40, lng: -73 },
+    { lat: -20, lng: -70 }, { lat: -5, lng: -80 }, { lat: 5, lng: -75 }
   ],
   // Africa
   [
-    { lat: 35, lng: -5 }, { lat: 37, lng: 10 }, { lat: 30, lng: 32 },
-    { lat: 15, lng: 40 }, { lat: 12, lng: 43 }, { lat: 10, lng: 50 },
-    { lat: -5, lng: 40 }, { lat: -30, lng: 30 }, { lat: -34, lng: 20 },
-    { lat: -30, lng: 15 }, { lat: 5, lng: 10 }, { lat: 5, lng: -10 },
-    { lat: 15, lng: -17 }, { lat: 30, lng: -10 }
-  ],
-  // Australia
-  [
-    { lat: -11, lng: 130 }, { lat: -10, lng: 136 }, { lat: -15, lng: 142 },
-    { lat: -25, lng: 153 }, { lat: -38, lng: 148 }, { lat: -35, lng: 115 },
-    { lat: -21, lng: 114 }, { lat: -19, lng: 121 }
+    { lat: 35, lng: -6 }, { lat: 37, lng: 11 }, { lat: 31, lng: 32 },
+    { lat: 28, lng: 34 }, { lat: 15, lng: 40 }, { lat: 12, lng: 43 },
+    { lat: 10, lng: 51 }, { lat: -5, lng: 39 }, { lat: -30, lng: 31 },
+    { lat: -34, lng: 19 }, { lat: -30, lng: 14 }, { lat: -10, lng: 12 },
+    { lat: 5, lng: 9 }, { lat: 5, lng: -10 }, { lat: 15, lng: -17 },
+    { lat: 32, lng: -13 }
   ],
   // Eurasia
   [
-    { lat: 70, lng: -10 }, { lat: 72, lng: 20 }, { lat: 75, lng: 60 },
-    { lat: 70, lng: 100 }, { lat: 75, lng: 140 }, { lat: 70, lng: 170 },
-    { lat: 60, lng: 170 }, { lat: 50, lng: 140 }, { lat: 35, lng: 140 },
-    { lat: 30, lng: 130 }, { lat: 22, lng: 120 }, { lat: 20, lng: 110 },
-    { lat: 10, lng: 105 }, { lat: 5, lng: 100 }, { lat: 10, lng: 95 },
-    { lat: 15, lng: 80 }, { lat: 25, lng: 65 }, { lat: 12, lng: 44 },
-    { lat: 30, lng: 32 }, { lat: 40, lng: 26 }, { lat: 45, lng: 13 },
+    { lat: 71, lng: -10 }, { lat: 72, lng: 25 }, { lat: 77, lng: 60 },
+    { lat: 73, lng: 80 }, { lat: 76, lng: 110 }, { lat: 72, lng: 140 },
+    { lat: 70, lng: 170 }, { lat: 60, lng: 170 }, { lat: 52, lng: 143 },
+    { lat: 40, lng: 140 }, { lat: 35, lng: 140 }, { lat: 30, lng: 121 },
+    { lat: 22, lng: 115 }, { lat: 20, lng: 108 }, { lat: 10, lng: 107 },
+    { lat: 5, lng: 100 }, { lat: 10, lng: 95 }, { lat: 15, lng: 80 },
+    { lat: 22, lng: 68 }, { lat: 25, lng: 60 }, { lat: 12, lng: 44 },
+    { lat: 30, lng: 32 }, { lat: 40, lng: 26 }, { lat: 41, lng: 15 },
     { lat: 43, lng: -9 }, { lat: 50, lng: -5 }, { lat: 60, lng: 5 }
+  ],
+  // India
+  [
+    { lat: 25, lng: 68 }, { lat: 24, lng: 75 }, { lat: 28, lng: 77 },
+    { lat: 22, lng: 88 }, { lat: 16, lng: 82 }, { lat: 8, lng: 78 },
+    { lat: 13, lng: 75 }, { lat: 20, lng: 73 }
+  ],
+  // Australia
+  [
+    { lat: -11, lng: 131 }, { lat: -10, lng: 136 }, { lat: -15, lng: 142 },
+    { lat: -25, lng: 153 }, { lat: -38, lng: 148 }, { lat: -37, lng: 140 },
+    { lat: -35, lng: 115 }, { lat: -22, lng: 114 }, { lat: -20, lng: 120 }
   ],
   // Greenland
   [
     { lat: 80, lng: -60 }, { lat: 83, lng: -30 }, { lat: 70, lng: -20 },
     { lat: 60, lng: -40 }, { lat: 65, lng: -55 }, { lat: 75, lng: -70 }
+  ],
+  // Japan
+  [
+    { lat: 45, lng: 142 }, { lat: 40, lng: 140 }, { lat: 35, lng: 135 },
+    { lat: 31, lng: 130 }, { lat: 33, lng: 133 }, { lat: 38, lng: 138 }
+  ],
+  // United Kingdom
+  [
+    { lat: 58, lng: -6 }, { lat: 58, lng: -2 }, { lat: 55, lng: -2 },
+    { lat: 50, lng: -5 }, { lat: 51, lng: 1 }, { lat: 54, lng: -1 }
   ]
 ];
 
@@ -190,20 +209,30 @@ export function MapSection() {
 
     // 1. Atmosphere radial gradient glow
     const glow = ctx.createRadialGradient(cx, cy, R - 10, cx, cy, R + 30);
-    glow.addColorStop(0, isDark ? 'rgba(56, 189, 248, 0.12)' : 'rgba(14, 165, 233, 0.12)');
-    glow.addColorStop(0.6, isDark ? 'rgba(56, 189, 248, 0.04)' : 'rgba(14, 165, 233, 0.04)');
+    glow.addColorStop(0, isDark ? 'rgba(56, 189, 248, 0.18)' : 'rgba(14, 165, 233, 0.18)');
+    glow.addColorStop(0.6, isDark ? 'rgba(56, 189, 248, 0.05)' : 'rgba(14, 165, 233, 0.05)');
     glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.beginPath();
     ctx.arc(cx, cy, R + 30, 0, 2 * Math.PI);
     ctx.fillStyle = glow;
     ctx.fill();
 
-    // 2. Base Sphere Fill
+    // 2. Base Sphere Fill (deep color matching real maps)
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, 2 * Math.PI);
-    ctx.fillStyle = isDark ? 'rgba(10, 10, 15, 0.95)' : 'rgba(255, 255, 255, 0.95)';
+    ctx.fillStyle = isDark ? 'rgba(12, 16, 28, 0.98)' : 'rgba(240, 244, 252, 0.98)';
     ctx.fill();
-    ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
+    
+    // Internal shadow/glow inside sphere to look 3D
+    const innerGlow = ctx.createRadialGradient(cx, cy, R * 0.85, cx, cy, R);
+    innerGlow.addColorStop(0, 'rgba(0,0,0,0)');
+    innerGlow.addColorStop(1, isDark ? 'rgba(56, 189, 248, 0.12)' : 'rgba(14, 165, 233, 0.08)');
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, 2 * Math.PI);
+    ctx.fillStyle = innerGlow;
+    ctx.fill();
+
+    ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
     ctx.lineWidth = 1;
     ctx.stroke();
 
@@ -237,7 +266,7 @@ export function MapSection() {
     };
 
     // 3. Grid lines (Latitude Parallels)
-    ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
+    ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)';
     ctx.lineWidth = 0.5;
 
     const parallels = [-60, -30, 0, 30, 60];
@@ -281,40 +310,52 @@ export function MapSection() {
       ctx.stroke();
     });
 
-    // 4. Draw continent lines
-    ctx.strokeStyle = isDark ? 'rgba(56, 189, 248, 0.25)' : 'rgba(14, 165, 233, 0.25)';
-    ctx.fillStyle = isDark ? 'rgba(56, 189, 248, 0.04)' : 'rgba(14, 165, 233, 0.03)';
-    ctx.lineWidth = 1;
+    // 4. Draw continent lines (filled & smoothed with quadratic curves)
+    ctx.strokeStyle = isDark ? 'rgba(56, 189, 248, 0.4)' : 'rgba(14, 165, 233, 0.45)';
+    ctx.fillStyle = isDark ? 'rgba(56, 189, 248, 0.12)' : 'rgba(14, 165, 233, 0.09)';
+    ctx.lineWidth = 1.2;
 
     continents.forEach((poly) => {
-      ctx.beginPath();
-      let first = true;
-      
-      for (let i = 0; i <= poly.length; i++) {
-        const p = poly[i % poly.length];
-        const pt = project(p.lat, p.lng);
+      const projectedPoints = poly.map(p => project(p.lat, p.lng));
+      let segments: Array<Array<{x: number; y: number}>> = [];
+      let currentSegment: Array<{x: number; y: number}> = [];
+
+      projectedPoints.forEach((pt) => {
         if (pt.z > 0) {
-          if (first) {
-            ctx.moveTo(pt.x, pt.y);
-            first = false;
-          } else {
-            ctx.lineTo(pt.x, pt.y);
-          }
+          currentSegment.push({ x: pt.x, y: pt.y });
         } else {
-          if (!first) {
-            ctx.stroke();
-            ctx.beginPath();
-            first = true;
+          if (currentSegment.length > 0) {
+            segments.push(currentSegment);
+            currentSegment = [];
           }
         }
+      });
+      if (currentSegment.length > 0) {
+        segments.push(currentSegment);
       }
-      ctx.stroke();
+
+      segments.forEach((seg) => {
+        if (seg.length < 2) return;
+        
+        ctx.beginPath();
+        ctx.moveTo(seg[0].x, seg[0].y);
+        
+        for (let i = 0; i < seg.length - 1; i++) {
+          const xc = (seg[i].x + seg[i + 1].x) / 2;
+          const yc = (seg[i].y + seg[i + 1].y) / 2;
+          ctx.quadraticCurveTo(seg[i].x, seg[i].y, xc, yc);
+        }
+        
+        ctx.lineTo(seg[seg.length - 1].x, seg[seg.length - 1].y);
+        ctx.stroke();
+        ctx.fill();
+      });
     });
 
     // 5. Outer orbit ring
     ctx.beginPath();
     ctx.ellipse(cx, cy, R + 20, (R + 20) * 0.15, Math.PI / 10, 0, 2 * Math.PI);
-    ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.07)' : 'rgba(0, 0, 0, 0.07)';
+    ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
     ctx.lineWidth = 1;
     ctx.stroke();
 
@@ -366,7 +407,7 @@ export function MapSection() {
 
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12 items-stretch h-auto lg:h-[600px]">
           
-          {/* Location List (Mobile Scroll / Desktop Vertical List) */}
+          {/* Location List */}
           <div className="flex flex-row lg:flex-col overflow-x-auto lg:overflow-y-auto gap-4 pb-4 lg:pb-0 lg:pr-4 lg:w-80 shrink-0 scrollbar-hide snap-x snap-mandatory">
             {mapLocations.map((loc) => (
               <div 
@@ -427,7 +468,7 @@ export function MapSection() {
                 const isActive = activeLocation === pin.id;
 
                 return (
-                  <button
+                  <div
                     key={pin.id}
                     onClick={() => handlePinClick(pin)}
                     onMouseEnter={() => setActiveLocation(pin.id)}
@@ -437,21 +478,35 @@ export function MapSection() {
                       transform: 'translate(-50%, -50%)',
                       pointerEvents: isZoomed ? 'none' : 'auto'
                     }}
-                    className={`absolute z-10 w-9 h-9 lg:w-10 lg:h-10 rounded-full flex items-center justify-center shadow-xl backdrop-blur-md transition-all duration-300 ${
-                      isActive 
-                        ? 'bg-sky-500 text-white scale-125 ring-4 ring-sky-500/25' 
-                        : 'bg-white/70 dark:bg-black/70 text-black dark:text-white border border-black/10 dark:border-white/10 hover:scale-110'
-                    }`}
+                    className="absolute z-10 cursor-pointer group/pin"
                   >
-                    <MapPin className="w-4 h-4 lg:w-5 lg:h-5" />
+                    {/* Glowing Radar Pulse Wave */}
+                    <span className={`absolute inset-0 w-8 h-8 -translate-x-[25%] -translate-y-[25%] rounded-full border-2 border-sky-400 dark:border-sky-300 animate-ping opacity-60 pointer-events-none duration-1000 ${
+                      isActive ? 'scale-125' : 'scale-100'
+                    }`} />
                     
-                    {/* Tooltip on Active Pin */}
-                    {isActive && (
-                      <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-black dark:bg-white text-white dark:text-black px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap shadow-xl pointer-events-none animate-bounce">
-                        {pin.name}
-                      </span>
-                    )}
-                  </button>
+                    {/* Secondary Inner Glow Ring */}
+                    <span className="absolute inset-0 w-6 h-6 -translate-x-[12.5%] -translate-y-[12.5%] rounded-full bg-sky-400/20 dark:bg-sky-300/20 animate-pulse pointer-events-none" />
+
+                    {/* Central Glow Dot */}
+                    <div className={`w-4 h-4 rounded-full flex items-center justify-center transition-all shadow-md border-2 border-white dark:border-black ${
+                      isActive 
+                        ? 'bg-sky-500 scale-125' 
+                        : 'bg-neutral-800 dark:bg-white group-hover/pin:bg-sky-400'
+                    }`}>
+                      <div className="w-1.5 h-1.5 rounded-full bg-white dark:bg-black" />
+                    </div>
+                    
+                    {/* Tooltip & Name Tag (Floating label) */}
+                    <div className={`absolute left-6 top-1/2 -translate-y-1/2 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border backdrop-blur-md transition-all duration-300 shadow-xl pointer-events-none ${
+                      isActive 
+                        ? 'bg-black/95 dark:bg-white/95 text-white dark:text-black border-white/20 dark:border-black/10 scale-100 translate-x-0 opacity-100' 
+                        : 'bg-black/75 dark:bg-white/75 text-white/90 dark:text-black/90 border-white/10 dark:border-black/5 scale-90 -translate-x-2 opacity-0 group-hover/pin:opacity-100 group-hover/pin:scale-100 group-hover/pin:translate-x-0'
+                    }`}>
+                      <MapPin className={`w-3.5 h-3.5 ${isActive ? 'text-sky-400 dark:text-sky-600 font-bold' : 'text-white dark:text-black'}`} />
+                      <span className="text-[11px] font-extrabold whitespace-nowrap uppercase tracking-wider">{pin.name}</span>
+                    </div>
+                  </div>
                 );
               })}
             </div>
