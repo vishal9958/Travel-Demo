@@ -100,6 +100,19 @@ export function MapSection() {
   const isAnimatingRef = useRef(true);
   const targetRotationRef = useRef<{ x: number; y: number } | null>(null);
 
+  // Static space background stars generator
+  const starsRef = useRef<Array<{ x: number; y: number; size: number; opacity: number }>>([]);
+  if (starsRef.current.length === 0) {
+    for (let i = 0; i < 120; i++) {
+      starsRef.current.push({
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random() * 1.5 + 0.5,
+        opacity: Math.random() * 0.7 + 0.3
+      });
+    }
+  }
+
   // Resize listener
   useEffect(() => {
     if (!containerRef.current) return;
@@ -205,36 +218,34 @@ export function MapSection() {
 
     ctx.clearRect(0, 0, w, h);
 
-    const isDark = document.documentElement.classList.contains('dark');
+    // Draw Space Stars Background onto Canvas
+    starsRef.current.forEach((star) => {
+      ctx.beginPath();
+      ctx.arc(star.x * w, star.y * h, star.size, 0, 2 * Math.PI);
+      ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * 0.75})`;
+      ctx.fill();
+    });
 
     // 1. Atmosphere radial gradient glow
-    const glow = ctx.createRadialGradient(cx, cy, R - 10, cx, cy, R + 30);
-    glow.addColorStop(0, isDark ? 'rgba(56, 189, 248, 0.18)' : 'rgba(14, 165, 233, 0.18)');
-    glow.addColorStop(0.6, isDark ? 'rgba(56, 189, 248, 0.05)' : 'rgba(14, 165, 233, 0.05)');
+    const glow = ctx.createRadialGradient(cx, cy, R - 10, cx, cy, R + 35);
+    glow.addColorStop(0, 'rgba(56, 189, 248, 0.22)');
+    glow.addColorStop(0.3, 'rgba(56, 189, 248, 0.1)');
+    glow.addColorStop(0.7, 'rgba(14, 165, 233, 0.03)');
     glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.beginPath();
-    ctx.arc(cx, cy, R + 30, 0, 2 * Math.PI);
+    ctx.arc(cx, cy, R + 35, 0, 2 * Math.PI);
     ctx.fillStyle = glow;
     ctx.fill();
 
-    // 2. Base Sphere Fill (deep color matching real maps)
+    // 2. Base Ocean Sphere Fill (Realistic deep blue radial gradient with sunlight reflection)
+    const oceanGlow = ctx.createRadialGradient(cx - R/3, cy - R/3, R * 0.1, cx, cy, R);
+    oceanGlow.addColorStop(0, '#1d4ed8');   // Sunlit ocean blue
+    oceanGlow.addColorStop(0.4, '#1e3a8a'); // Mid ocean
+    oceanGlow.addColorStop(1, '#0b0f19');   // Shadowed ocean boundary
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, 2 * Math.PI);
-    ctx.fillStyle = isDark ? 'rgba(12, 16, 28, 0.98)' : 'rgba(240, 244, 252, 0.98)';
+    ctx.fillStyle = oceanGlow;
     ctx.fill();
-    
-    // Internal shadow/glow inside sphere to look 3D
-    const innerGlow = ctx.createRadialGradient(cx, cy, R * 0.85, cx, cy, R);
-    innerGlow.addColorStop(0, 'rgba(0,0,0,0)');
-    innerGlow.addColorStop(1, isDark ? 'rgba(56, 189, 248, 0.12)' : 'rgba(14, 165, 233, 0.08)');
-    ctx.beginPath();
-    ctx.arc(cx, cy, R, 0, 2 * Math.PI);
-    ctx.fillStyle = innerGlow;
-    ctx.fill();
-
-    ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
 
     const rx = rotation.x;
     const ry = rotation.y;
@@ -265,8 +276,8 @@ export function MapSection() {
       };
     };
 
-    // 3. Grid lines (Latitude Parallels)
-    ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.04)' : 'rgba(0, 0, 0, 0.04)';
+    // 3. Grid lines (Latitude Parallels) - Subtle on the ocean
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
     ctx.lineWidth = 0.5;
 
     const parallels = [-60, -30, 0, 30, 60];
@@ -289,32 +300,7 @@ export function MapSection() {
       ctx.stroke();
     });
 
-    // Grid lines (Longitude Meridians)
-    const meridians = [-150, -120, -90, -60, -30, 0, 30, 60, 90, 120, 150, 180];
-    meridians.forEach((lng) => {
-      ctx.beginPath();
-      let first = true;
-      for (let lat = -90; lat <= 90; lat += 5) {
-        const pt = project(lat, lng);
-        if (pt.z > 0) {
-          if (first) {
-            ctx.moveTo(pt.x, pt.y);
-            first = false;
-          } else {
-            ctx.lineTo(pt.x, pt.y);
-          }
-        } else {
-          first = true;
-        }
-      }
-      ctx.stroke();
-    });
-
-    // 4. Draw continent lines (filled & smoothed with quadratic curves)
-    ctx.strokeStyle = isDark ? 'rgba(56, 189, 248, 0.4)' : 'rgba(14, 165, 233, 0.45)';
-    ctx.fillStyle = isDark ? 'rgba(56, 189, 248, 0.12)' : 'rgba(14, 165, 233, 0.09)';
-    ctx.lineWidth = 1.2;
-
+    // 4. Draw continents (Organic fills & coastlines)
     continents.forEach((poly) => {
       const projectedPoints = poly.map(p => project(p.lat, p.lng));
       let segments: Array<Array<{x: number; y: number}>> = [];
@@ -347,16 +333,38 @@ export function MapSection() {
         }
         
         ctx.lineTo(seg[seg.length - 1].x, seg[seg.length - 1].y);
-        ctx.stroke();
+        ctx.closePath();
+        
+        // Landmass filling: Realistic green-brown earth gradient
+        const landGrad = ctx.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
+        landGrad.addColorStop(0, '#16a34a'); // Lush forest green
+        landGrad.addColorStop(0.5, '#15803d'); // Deep green
+        landGrad.addColorStop(1, '#854d0e'); // Sandy brown mountain range details
+        
+        ctx.fillStyle = landGrad;
         ctx.fill();
+        
+        ctx.strokeStyle = 'rgba(21, 128, 61, 0.4)'; // Dark green outline
+        ctx.lineWidth = 1;
+        ctx.stroke();
       });
     });
 
-    // 5. Outer orbit ring
+    // 5. 3D Volumetric Volumetric Sphere Shadow (Overlay layer on top of all land/ocean)
+    const shadowGlow = ctx.createRadialGradient(cx - R/4, cy - R/4, R * 0.75, cx, cy, R);
+    shadowGlow.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    shadowGlow.addColorStop(0.65, 'rgba(0, 0, 0, 0.45)');
+    shadowGlow.addColorStop(1, 'rgba(3, 7, 18, 0.95)'); // Cinematic dark side shading
     ctx.beginPath();
-    ctx.ellipse(cx, cy, R + 20, (R + 20) * 0.15, Math.PI / 10, 0, 2 * Math.PI);
-    ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.06)' : 'rgba(0, 0, 0, 0.06)';
-    ctx.lineWidth = 1;
+    ctx.arc(cx, cy, R, 0, 2 * Math.PI);
+    ctx.fillStyle = shadowGlow;
+    ctx.fill();
+
+    // 6. Atmosphere boundary stroke
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, 2 * Math.PI);
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.15)';
+    ctx.lineWidth = 1.5;
     ctx.stroke();
 
   }, [dimensions, rotation]);
@@ -433,11 +441,11 @@ export function MapSection() {
           {/* Globe Canvas Container */}
           <div 
             ref={containerRef}
-            className="flex-1 min-h-[400px] sm:min-h-[480px] lg:h-full bg-neutral-50 dark:bg-neutral-950/40 rounded-3xl relative overflow-hidden shadow-inner border border-black/5 dark:border-white/5 flex items-center justify-center"
+            className="flex-1 min-h-[400px] sm:min-h-[480px] lg:h-full bg-slate-950 rounded-3xl relative overflow-hidden shadow-inner border border-black/5 dark:border-white/5 flex items-center justify-center"
+            style={{
+              background: 'radial-gradient(circle at center, rgba(14, 165, 233, 0.12) 0%, rgba(99, 102, 241, 0.08) 35%, #030712 100%)'
+            }}
           >
-            {/* Holographic Space Stars Background */}
-            <div className="absolute inset-0 opacity-20 dark:opacity-40" style={{ backgroundImage: 'radial-gradient(circle, #888 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
-
             {/* Rotating 3D Canvas Globe */}
             <canvas 
               ref={canvasRef} 
