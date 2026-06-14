@@ -25,7 +25,7 @@ export function HeroSection() {
   const activeDestination = destinations[activeIndex];
 
   return (
-    <section className="relative w-full h-screen overflow-hidden bg-black flex items-end pb-24 sm:pb-32 justify-center">
+    <section className="relative w-full min-h-screen md:h-screen overflow-hidden bg-black flex items-center md:items-end pt-28 pb-16 md:py-0 md:pb-24 justify-center">
       {/* Background Images with crossfade */}
       <AnimatePresence initial={false}>
         <motion.img
@@ -45,7 +45,7 @@ export function HeroSection() {
       <div className="absolute inset-0 z-0 bg-gradient-to-r from-black/50 via-transparent to-black/30 pointer-events-none" />
 
       {/* Content */}
-      <div className="relative z-10 w-full max-w-7xl px-6 flex flex-col md:flex-row justify-between items-end gap-12">
+      <div className="relative z-10 w-full max-w-7xl px-6 flex flex-col md:flex-row justify-between items-stretch md:items-end gap-10 md:gap-12 mt-auto">
         {/* Text Info */}
         <div className="flex-1 max-w-xl">
           <motion.div
@@ -70,7 +70,7 @@ export function HeroSection() {
         </div>
 
         {/* Card Slider */}
-        <div className="flex gap-4 md:w-auto w-full overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
+        <div className="flex gap-4 md:w-auto w-full overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide shrink-0">
           {destinations.map((dest, idx) => {
             const isActive = idx === activeIndex;
             return (
