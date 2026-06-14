@@ -85,6 +85,31 @@ const continents = [
   ]
 ];
 
+// Rich vector map color scheme
+const continentColors = [
+  '#f25c54', // North America (Coral Orange)
+  '#ffd166', // South America (Warm Yellow)
+  '#dfb28e', // Africa (Sand Beige)
+  '#81b29a', // Eurasia (Teal/Green)
+  '#e76f51', // India (Terracotta Orange)
+  '#ffd166', // Australia (Warm Yellow)
+  '#f4f1de', // Greenland (Cream White)
+  '#f25c54', // Japan (Coral Orange)
+  '#ffd166'  // United Kingdom (Warm Yellow)
+];
+
+const continentStrokes = [
+  '#d6453d', // North America
+  '#e0b743', // South America
+  '#c69c78', // Africa
+  '#6a9981', // Eurasia
+  '#c75a3c', // India
+  '#e0b743', // Australia
+  '#dbd8c5', // Greenland
+  '#d6453d', // Japan
+  '#e0b743'  // UK
+];
+
 export function MapSection() {
   const [activeLocation, setActiveLocation] = useState(mapLocations[0].id);
   const [rotation, setRotation] = useState({ x: -0.2, y: 0 });
@@ -103,12 +128,12 @@ export function MapSection() {
   // Static space background stars generator
   const starsRef = useRef<Array<{ x: number; y: number; size: number; opacity: number }>>([]);
   if (starsRef.current.length === 0) {
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 90; i++) {
       starsRef.current.push({
         x: Math.random(),
         y: Math.random(),
         size: Math.random() * 1.5 + 0.5,
-        opacity: Math.random() * 0.7 + 0.3
+        opacity: Math.random() * 0.6 + 0.2
       });
     }
   }
@@ -222,30 +247,39 @@ export function MapSection() {
     starsRef.current.forEach((star) => {
       ctx.beginPath();
       ctx.arc(star.x * w, star.y * h, star.size, 0, 2 * Math.PI);
-      ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * 0.75})`;
+      ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * 0.55})`;
       ctx.fill();
     });
 
     // 1. Atmosphere radial gradient glow
     const glow = ctx.createRadialGradient(cx, cy, R - 10, cx, cy, R + 35);
-    glow.addColorStop(0, 'rgba(56, 189, 248, 0.22)');
-    glow.addColorStop(0.3, 'rgba(56, 189, 248, 0.1)');
-    glow.addColorStop(0.7, 'rgba(14, 165, 233, 0.03)');
+    glow.addColorStop(0, 'rgba(81, 140, 175, 0.22)');
+    glow.addColorStop(0.3, 'rgba(81, 140, 175, 0.12)');
+    glow.addColorStop(0.7, 'rgba(36, 55, 70, 0.03)');
     glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.beginPath();
     ctx.arc(cx, cy, R + 35, 0, 2 * Math.PI);
     ctx.fillStyle = glow;
     ctx.fill();
 
-    // 2. Base Ocean Sphere Fill (Realistic deep blue radial gradient with sunlight reflection)
-    const oceanGlow = ctx.createRadialGradient(cx - R/3, cy - R/3, R * 0.1, cx, cy, R);
-    oceanGlow.addColorStop(0, '#1d4ed8');   // Sunlit ocean blue
-    oceanGlow.addColorStop(0.4, '#1e3a8a'); // Mid ocean
-    oceanGlow.addColorStop(1, '#0b0f19');   // Shadowed ocean boundary
+    // 2. Base Ocean Sphere Fill (Matching the exact slate blue background of the illustrative reference map)
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, 2 * Math.PI);
-    ctx.fillStyle = oceanGlow;
+    ctx.fillStyle = '#243746'; // Slate Blue Ocean from vector reference map
     ctx.fill();
+    
+    // Internal shadow/glow inside sphere to look 3D and volumetric
+    const innerGlow = ctx.createRadialGradient(cx - R/4, cy - R/4, R * 0.75, cx, cy, R);
+    innerGlow.addColorStop(0, 'rgba(0,0,0,0)');
+    innerGlow.addColorStop(1, 'rgba(15, 23, 42, 0.35)'); // Soft dark edge shadow
+    ctx.beginPath();
+    ctx.arc(cx, cy, R, 0, 2 * Math.PI);
+    ctx.fillStyle = innerGlow;
+    ctx.fill();
+
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
 
     const rx = rotation.x;
     const ry = rotation.y;
@@ -300,8 +334,11 @@ export function MapSection() {
       ctx.stroke();
     });
 
-    // 4. Draw continents (Organic fills & coastlines)
-    continents.forEach((poly) => {
+    // 4. Draw continents in illustrative colors (smoothed with Bezier/quadratic curves)
+    continents.forEach((poly, idx) => {
+      const fillColor = continentColors[idx] || '#81b29a';
+      const strokeColor = continentStrokes[idx] || '#6a9981';
+
       const projectedPoints = poly.map(p => project(p.lat, p.lng));
       let segments: Array<Array<{x: number; y: number}>> = [];
       let currentSegment: Array<{x: number; y: number}> = [];
@@ -335,26 +372,20 @@ export function MapSection() {
         ctx.lineTo(seg[seg.length - 1].x, seg[seg.length - 1].y);
         ctx.closePath();
         
-        // Landmass filling: Realistic green-brown earth gradient
-        const landGrad = ctx.createLinearGradient(cx - R, cy - R, cx + R, cy + R);
-        landGrad.addColorStop(0, '#16a34a'); // Lush forest green
-        landGrad.addColorStop(0.5, '#15803d'); // Deep green
-        landGrad.addColorStop(1, '#854d0e'); // Sandy brown mountain range details
-        
-        ctx.fillStyle = landGrad;
+        ctx.fillStyle = fillColor;
         ctx.fill();
         
-        ctx.strokeStyle = 'rgba(21, 128, 61, 0.4)'; // Dark green outline
+        ctx.strokeStyle = strokeColor;
         ctx.lineWidth = 1;
         ctx.stroke();
       });
     });
 
-    // 5. 3D Volumetric Volumetric Sphere Shadow (Overlay layer on top of all land/ocean)
+    // 5. 3D Volumetric Sphere Shadow (Overlay layer on top of all land/ocean)
     const shadowGlow = ctx.createRadialGradient(cx - R/4, cy - R/4, R * 0.75, cx, cy, R);
     shadowGlow.addColorStop(0, 'rgba(0, 0, 0, 0)');
-    shadowGlow.addColorStop(0.65, 'rgba(0, 0, 0, 0.45)');
-    shadowGlow.addColorStop(1, 'rgba(3, 7, 18, 0.95)'); // Cinematic dark side shading
+    shadowGlow.addColorStop(0.7, 'rgba(0, 0, 0, 0.35)');
+    shadowGlow.addColorStop(1, 'rgba(18, 28, 36, 0.85)'); // Blends with outer background
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, 2 * Math.PI);
     ctx.fillStyle = shadowGlow;
@@ -363,8 +394,8 @@ export function MapSection() {
     // 6. Atmosphere boundary stroke
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, 2 * Math.PI);
-    ctx.strokeStyle = 'rgba(56, 189, 248, 0.15)';
-    ctx.lineWidth = 1.5;
+    ctx.strokeStyle = 'rgba(81, 140, 175, 0.15)';
+    ctx.lineWidth = 1;
     ctx.stroke();
 
   }, [dimensions, rotation]);
@@ -441,9 +472,9 @@ export function MapSection() {
           {/* Globe Canvas Container */}
           <div 
             ref={containerRef}
-            className="flex-1 min-h-[400px] sm:min-h-[480px] lg:h-full bg-slate-950 rounded-3xl relative overflow-hidden shadow-inner border border-black/5 dark:border-white/5 flex items-center justify-center"
+            className="flex-1 min-h-[400px] sm:min-h-[480px] lg:h-full rounded-3xl relative overflow-hidden shadow-inner border border-black/5 dark:border-white/5 flex items-center justify-center"
             style={{
-              background: 'radial-gradient(circle at center, rgba(14, 165, 233, 0.12) 0%, rgba(99, 102, 241, 0.08) 35%, #030712 100%)'
+              background: 'radial-gradient(circle at center, rgba(81, 140, 175, 0.16) 0%, rgba(36, 55, 70, 0.12) 40%, #121c24 100%)'
             }}
           >
             {/* Rotating 3D Canvas Globe */}
