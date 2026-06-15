@@ -18,101 +18,12 @@ const locationDescriptions: Record<string, string> = {
   '4': "Tropical rainforest canopy, serene emerald rice terraces, and ancient sacred water temples. A peaceful sanctuary of natural beauty, culture, and tranquility in Bali."
 };
 
-const continents = [
-  // North America
-  [
-    { lat: 72, lng: -168 }, { lat: 70, lng: -120 }, { lat: 60, lng: -100 },
-    { lat: 65, lng: -80 }, { lat: 70, lng: -60 }, { lat: 50, lng: -50 },
-    { lat: 45, lng: -65 }, { lat: 25, lng: -80 }, { lat: 15, lng: -90 },
-    { lat: 8, lng: -77 }, { lat: 10, lng: -85 }, { lat: 20, lng: -105 },
-    { lat: 30, lng: -115 }, { lat: 33, lng: -120 }, { lat: 45, lng: -125 },
-    { lat: 60, lng: -140 }, { lat: 65, lng: -168 }
-  ],
-  // South America
-  [
-    { lat: 12, lng: -72 }, { lat: 10, lng: -50 }, { lat: -5, lng: -35 },
-    { lat: -10, lng: -38 }, { lat: -23, lng: -43 }, { lat: -45, lng: -63 },
-    { lat: -55, lng: -68 }, { lat: -50, lng: -75 }, { lat: -40, lng: -73 },
-    { lat: -20, lng: -70 }, { lat: -5, lng: -80 }, { lat: 5, lng: -75 }
-  ],
-  // Africa
-  [
-    { lat: 35, lng: -6 }, { lat: 37, lng: 11 }, { lat: 31, lng: 32 },
-    { lat: 28, lng: 34 }, { lat: 15, lng: 40 }, { lat: 12, lng: 43 },
-    { lat: 10, lng: 51 }, { lat: -5, lng: 39 }, { lat: -30, lng: 31 },
-    { lat: -34, lng: 19 }, { lat: -30, lng: 14 }, { lat: -10, lng: 12 },
-    { lat: 5, lng: 9 }, { lat: 5, lng: -10 }, { lat: 15, lng: -17 },
-    { lat: 32, lng: -13 }
-  ],
-  // Eurasia
-  [
-    { lat: 71, lng: -10 }, { lat: 72, lng: 25 }, { lat: 77, lng: 60 },
-    { lat: 73, lng: 80 }, { lat: 76, lng: 110 }, { lat: 72, lng: 140 },
-    { lat: 70, lng: 170 }, { lat: 60, lng: 170 }, { lat: 52, lng: 143 },
-    { lat: 40, lng: 140 }, { lat: 35, lng: 140 }, { lat: 30, lng: 121 },
-    { lat: 22, lng: 115 }, { lat: 20, lng: 108 }, { lat: 10, lng: 107 },
-    { lat: 5, lng: 100 }, { lat: 10, lng: 95 }, { lat: 15, lng: 80 },
-    { lat: 22, lng: 68 }, { lat: 25, lng: 60 }, { lat: 12, lng: 44 },
-    { lat: 30, lng: 32 }, { lat: 40, lng: 26 }, { lat: 41, lng: 15 },
-    { lat: 43, lng: -9 }, { lat: 50, lng: -5 }, { lat: 60, lng: 5 }
-  ],
-  // India
-  [
-    { lat: 25, lng: 68 }, { lat: 24, lng: 75 }, { lat: 28, lng: 77 },
-    { lat: 22, lng: 88 }, { lat: 16, lng: 82 }, { lat: 8, lng: 78 },
-    { lat: 13, lng: 75 }, { lat: 20, lng: 73 }
-  ],
-  // Australia
-  [
-    { lat: -11, lng: 131 }, { lat: -10, lng: 136 }, { lat: -15, lng: 142 },
-    { lat: -25, lng: 153 }, { lat: -38, lng: 148 }, { lat: -37, lng: 140 },
-    { lat: -35, lng: 115 }, { lat: -22, lng: 114 }, { lat: -20, lng: 120 }
-  ],
-  // Greenland
-  [
-    { lat: 80, lng: -60 }, { lat: 83, lng: -30 }, { lat: 70, lng: -20 },
-    { lat: 60, lng: -40 }, { lat: 65, lng: -55 }, { lat: 75, lng: -70 }
-  ],
-  // Japan
-  [
-    { lat: 45, lng: 142 }, { lat: 40, lng: 140 }, { lat: 35, lng: 135 },
-    { lat: 31, lng: 130 }, { lat: 33, lng: 133 }, { lat: 38, lng: 138 }
-  ],
-  // United Kingdom
-  [
-    { lat: 58, lng: -6 }, { lat: 58, lng: -2 }, { lat: 55, lng: -2 },
-    { lat: 50, lng: -5 }, { lat: 51, lng: 1 }, { lat: 54, lng: -1 }
-  ]
-];
-
-// Rich vector map color scheme
-const continentColors = [
-  '#f25c54', // North America (Coral Orange)
-  '#ffd166', // South America (Warm Yellow)
-  '#dfb28e', // Africa (Sand Beige)
-  '#81b29a', // Eurasia (Teal/Green)
-  '#e76f51', // India (Terracotta Orange)
-  '#ffd166', // Australia (Warm Yellow)
-  '#f4f1de', // Greenland (Cream White)
-  '#f25c54', // Japan (Coral Orange)
-  '#ffd166'  // United Kingdom (Warm Yellow)
-];
-
-const continentStrokes = [
-  '#d6453d', // North America
-  '#e0b743', // South America
-  '#c69c78', // Africa
-  '#6a9981', // Eurasia
-  '#c75a3c', // India
-  '#e0b743', // Australia
-  '#dbd8c5', // Greenland
-  '#d6453d', // Japan
-  '#e0b743'  // UK
-];
+// Earth's axis tilt angle in radians (~8.5 degrees for aesthetic tilt)
+const TILT = -0.15;
 
 export function MapSection() {
   const [activeLocation, setActiveLocation] = useState(mapLocations[0].id);
-  const [rotation, setRotation] = useState({ x: -0.2, y: 0 });
+  const [rotation, setRotation] = useState({ x: -0.1, y: 0 });
   const [isZoomed, setIsZoomed] = useState(false);
   const [selectedLoc, setSelectedLoc] = useState<typeof mapLocations[0] | null>(null);
 
@@ -120,8 +31,11 @@ export function MapSection() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 500, height: 500 });
 
+  const textureRef = useRef<HTMLImageElement | null>(null);
+  const [textureLoaded, setTextureLoaded] = useState(false);
+
   const requestRef = useRef<number | null>(null);
-  const rotationRef = useRef({ x: -0.2, y: 0 });
+  const rotationRef = useRef({ x: -0.1, y: 0 });
   const isAnimatingRef = useRef(true);
   const targetRotationRef = useRef<{ x: number; y: number } | null>(null);
 
@@ -137,6 +51,16 @@ export function MapSection() {
       });
     }
   }
+
+  // Load Earth texture
+  useEffect(() => {
+    const img = new Image();
+    img.src = '/earth_satellite.png';
+    img.onload = () => {
+      textureRef.current = img;
+      setTextureLoaded(true);
+    };
+  }, []);
 
   // Resize listener
   useEffect(() => {
@@ -159,7 +83,7 @@ export function MapSection() {
   useEffect(() => {
     const animate = () => {
       if (isAnimatingRef.current) {
-        rotationRef.current.y += 0.002; // Slow idle spin
+        rotationRef.current.y += 0.0015; // Slow idle spin
         setRotation({ ...rotationRef.current });
       } else if (targetRotationRef.current) {
         const dx = targetRotationRef.current.x - rotationRef.current.x;
@@ -251,154 +175,128 @@ export function MapSection() {
       ctx.fill();
     });
 
-    // 1. Atmosphere radial gradient glow
+    // 1. Atmosphere outer blue radial gradient glow
     const glow = ctx.createRadialGradient(cx, cy, R - 10, cx, cy, R + 35);
-    glow.addColorStop(0, 'rgba(81, 140, 175, 0.22)');
-    glow.addColorStop(0.3, 'rgba(81, 140, 175, 0.12)');
-    glow.addColorStop(0.7, 'rgba(36, 55, 70, 0.03)');
+    glow.addColorStop(0, 'rgba(147, 197, 253, 0.28)'); // Soft blue glow
+    glow.addColorStop(0.3, 'rgba(147, 197, 253, 0.15)');
+    glow.addColorStop(0.7, 'rgba(56, 189, 248, 0.04)');
     glow.addColorStop(1, 'rgba(0, 0, 0, 0)');
     ctx.beginPath();
     ctx.arc(cx, cy, R + 35, 0, 2 * Math.PI);
     ctx.fillStyle = glow;
     ctx.fill();
 
-    // 2. Base Ocean Sphere Fill (Matching the exact slate blue background of the illustrative reference map)
+    // Save context to apply Earth's axis tilt
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(TILT);
+    ctx.translate(-cx, -cy);
+
+    // 2. Base Ocean Sphere Backup Fill (Realistic deep blue)
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, 2 * Math.PI);
-    ctx.fillStyle = '#243746'; // Slate Blue Ocean from vector reference map
-    ctx.fill();
-    
-    // Internal shadow/glow inside sphere to look 3D and volumetric
-    const innerGlow = ctx.createRadialGradient(cx - R/4, cy - R/4, R * 0.75, cx, cy, R);
-    innerGlow.addColorStop(0, 'rgba(0,0,0,0)');
-    innerGlow.addColorStop(1, 'rgba(15, 23, 42, 0.35)'); // Soft dark edge shadow
-    ctx.beginPath();
-    ctx.arc(cx, cy, R, 0, 2 * Math.PI);
-    ctx.fillStyle = innerGlow;
+    ctx.fillStyle = '#102a43'; // Deep ocean backup color
     ctx.fill();
 
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    // 3. Render Texture Slices for 3D Sphere mapping
+    if (textureRef.current && textureLoaded) {
+      const img = textureRef.current;
+      const imgW = img.width;
+      const imgH = img.height;
 
-    const rx = rotation.x;
-    const ry = rotation.y;
+      const rot = (rotation.y / (2 * Math.PI)) % 1;
+      const rotOffset = rot < 0 ? rot + 1 : rot;
 
-    // Projection calculation
-    const project = (lat: number, lng: number) => {
-      const phi = (lat * Math.PI) / 180;
-      const theta = (lng * Math.PI) / 180;
+      // Slice the globe horizontally into 1.5px tall segments
+      const step = 1.5;
+      for (let y = -R; y < R; y += step) {
+        const dy = y / R;
+        const r = R * Math.sqrt(1 - dy * dy); // Half-width of sphere slice
+        
+        if (r <= 0.5) continue;
 
-      const x0 = Math.cos(phi) * Math.sin(theta);
-      const y0 = -Math.sin(phi);
-      const z0 = Math.cos(phi) * Math.cos(theta);
+        // Calculate source Y in flat map image
+        const textureY = Math.floor(((dy + 1) / 2) * imgH);
+        
+        // Sphere shows 180 degrees of longitude (half map width)
+        const visibleSrcWidth = imgW / 2;
+        
+        // Offset left coordinate based on rotation
+        let srcX = (rotOffset - 0.25) * imgW;
 
-      // Rotate Y (yaw)
-      const x1 = x0 * Math.cos(ry) - z0 * Math.sin(ry);
-      const z1 = x0 * Math.sin(ry) + z0 * Math.cos(ry);
-      const y1 = y0;
+        const destX = cx - r;
+        const destY = cy + y;
+        const destWidth = 2 * r;
+        const destHeight = step + 0.5; // Overlay slightly to avoid scanlines
 
-      // Rotate X (pitch)
-      const x2 = x1;
-      const y2 = y1 * Math.cos(rx) - z1 * Math.sin(rx);
-      const z2 = y1 * Math.sin(rx) + z1 * Math.cos(rx);
+        // Handle horizontal wrap-around
+        if (srcX < 0) {
+          const firstPartSrcX = srcX + imgW;
+          const firstPartSrcWidth = imgW - firstPartSrcX;
+          const firstPartDestWidth = (firstPartSrcWidth / visibleSrcWidth) * destWidth;
 
-      return {
-        x: cx + x2 * R,
-        y: cy + y2 * R,
-        z: z2
-      };
-    };
+          ctx.drawImage(
+            img,
+            firstPartSrcX, textureY, firstPartSrcWidth, 1,
+            destX, destY, firstPartDestWidth, destHeight
+          );
 
-    // 3. Grid lines (Latitude Parallels) - Subtle on the ocean
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
-    ctx.lineWidth = 0.5;
+          ctx.drawImage(
+            img,
+            0, textureY, visibleSrcWidth - firstPartSrcWidth, 1,
+            destX + firstPartDestWidth, destY, destWidth - firstPartDestWidth, destHeight
+          );
+        }
+        else if (srcX + visibleSrcWidth > imgW) {
+          const firstPartSrcWidth = imgW - srcX;
+          const firstPartDestWidth = (firstPartSrcWidth / visibleSrcWidth) * destWidth;
 
-    const parallels = [-60, -30, 0, 30, 60];
-    parallels.forEach((lat) => {
-      ctx.beginPath();
-      let first = true;
-      for (let lng = -180; lng <= 180; lng += 5) {
-        const pt = project(lat, lng);
-        if (pt.z > 0) {
-          if (first) {
-            ctx.moveTo(pt.x, pt.y);
-            first = false;
-          } else {
-            ctx.lineTo(pt.x, pt.y);
-          }
-        } else {
-          first = true;
+          ctx.drawImage(
+            img,
+            srcX, textureY, firstPartSrcWidth, 1,
+            destX, destY, firstPartDestWidth, destHeight
+          );
+
+          ctx.drawImage(
+            img,
+            0, textureY, visibleSrcWidth - firstPartSrcWidth, 1,
+            destX + firstPartDestWidth, destY, destWidth - firstPartDestWidth, destHeight
+          );
+        }
+        else {
+          ctx.drawImage(
+            img,
+            srcX, textureY, visibleSrcWidth, 1,
+            destX, destY, destWidth, destHeight
+          );
         }
       }
-      ctx.stroke();
-    });
+    }
 
-    // 4. Draw continents in illustrative colors (smoothed with Bezier/quadratic curves)
-    continents.forEach((poly, idx) => {
-      const fillColor = continentColors[idx] || '#81b29a';
-      const strokeColor = continentStrokes[idx] || '#6a9981';
-
-      const projectedPoints = poly.map(p => project(p.lat, p.lng));
-      let segments: Array<Array<{x: number; y: number}>> = [];
-      let currentSegment: Array<{x: number; y: number}> = [];
-
-      projectedPoints.forEach((pt) => {
-        if (pt.z > 0) {
-          currentSegment.push({ x: pt.x, y: pt.y });
-        } else {
-          if (currentSegment.length > 0) {
-            segments.push(currentSegment);
-            currentSegment = [];
-          }
-        }
-      });
-      if (currentSegment.length > 0) {
-        segments.push(currentSegment);
-      }
-
-      segments.forEach((seg) => {
-        if (seg.length < 2) return;
-        
-        ctx.beginPath();
-        ctx.moveTo(seg[0].x, seg[0].y);
-        
-        for (let i = 0; i < seg.length - 1; i++) {
-          const xc = (seg[i].x + seg[i + 1].x) / 2;
-          const yc = (seg[i].y + seg[i + 1].y) / 2;
-          ctx.quadraticCurveTo(seg[i].x, seg[i].y, xc, yc);
-        }
-        
-        ctx.lineTo(seg[seg.length - 1].x, seg[seg.length - 1].y);
-        ctx.closePath();
-        
-        ctx.fillStyle = fillColor;
-        ctx.fill();
-        
-        ctx.strokeStyle = strokeColor;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      });
-    });
-
-    // 5. 3D Volumetric Sphere Shadow (Overlay layer on top of all land/ocean)
+    // 4. Volumetric 3D Sphere Shadow (Dark side overlay)
     const shadowGlow = ctx.createRadialGradient(cx - R/4, cy - R/4, R * 0.75, cx, cy, R);
     shadowGlow.addColorStop(0, 'rgba(0, 0, 0, 0)');
-    shadowGlow.addColorStop(0.7, 'rgba(0, 0, 0, 0.35)');
-    shadowGlow.addColorStop(1, 'rgba(18, 28, 36, 0.85)'); // Blends with outer background
+    shadowGlow.addColorStop(0.6, 'rgba(0, 0, 0, 0.45)');
+    shadowGlow.addColorStop(1, 'rgba(10, 15, 30, 0.96)'); // Realistic planetary shadow
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, 2 * Math.PI);
     ctx.fillStyle = shadowGlow;
     ctx.fill();
 
-    // 6. Atmosphere boundary stroke
+    // 5. Atmosphere glow overlay rim
+    const rimGlow = ctx.createRadialGradient(cx, cy, R * 0.9, cx, cy, R);
+    rimGlow.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    rimGlow.addColorStop(0.8, 'rgba(147, 197, 253, 0.08)');
+    rimGlow.addColorStop(1, 'rgba(147, 197, 253, 0.35)');
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, 2 * Math.PI);
-    ctx.strokeStyle = 'rgba(81, 140, 175, 0.15)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    ctx.fillStyle = rimGlow;
+    ctx.fill();
 
-  }, [dimensions, rotation]);
+    // Restore tilt transformation
+    ctx.restore();
+
+  }, [dimensions, rotation, textureLoaded]);
 
   // Project HTML Overlay Pins
   const rx = rotation.x;
@@ -420,18 +318,30 @@ export function MapSection() {
     const y0 = -Math.sin(phi);
     const z0 = Math.cos(phi) * Math.cos(theta);
 
+    // Rotate Y (yaw)
     const x1 = x0 * Math.cos(ry) - z0 * Math.sin(ry);
     const z1 = x0 * Math.sin(ry) + z0 * Math.cos(ry);
     const y1 = y0;
 
+    // Rotate X (pitch)
     const x2 = x1;
     const y2 = y1 * Math.cos(rx) - z1 * Math.sin(rx);
     const z2 = y1 * Math.sin(rx) + z1 * Math.cos(rx);
 
+    // Get un-tilted coordinates
+    const sx0 = cx + x2 * R;
+    const sy0 = cy + y2 * R;
+
+    // Apply 2D Tilt rotation to match canvas axis rotation
+    const dx = sx0 - cx;
+    const dy = sy0 - cy;
+    const sx = cx + dx * Math.cos(TILT) - dy * Math.sin(TILT);
+    const sy = cy + dx * Math.sin(TILT) + dy * Math.cos(TILT);
+
     return {
       ...loc,
-      sx: cx + x2 * R,
-      sy: cy + y2 * R,
+      sx,
+      sy,
       visible: z2 > 0
     };
   });
@@ -472,9 +382,9 @@ export function MapSection() {
           {/* Globe Canvas Container */}
           <div 
             ref={containerRef}
-            className="flex-1 min-h-[400px] sm:min-h-[480px] lg:h-full rounded-3xl relative overflow-hidden shadow-inner border border-black/5 dark:border-white/5 flex items-center justify-center"
+            className="flex-1 min-h-[400px] sm:min-h-[480px] lg:h-full rounded-3xl relative overflow-hidden shadow-inner border border-black/5 dark:border-white/5 flex items-center justify-center bg-[#070b15]"
             style={{
-              background: 'radial-gradient(circle at center, rgba(81, 140, 175, 0.16) 0%, rgba(36, 55, 70, 0.12) 40%, #121c24 100%)'
+              background: 'radial-gradient(circle at center, rgba(30, 41, 59, 0.8) 0%, #030712 100%)'
             }}
           >
             {/* Rotating 3D Canvas Globe */}
@@ -484,7 +394,7 @@ export function MapSection() {
                 width: `${dimensions.width}px`,
                 height: `${dimensions.height}px`,
                 transform: isZoomed ? 'scale(3.2) rotate(12deg)' : 'scale(1) rotate(0deg)',
-                filter: isZoomed ? 'blur(8px) contrast(1.1)' : 'none',
+                filter: isZoomed ? 'blur(8px) contrast(1.15)' : 'none',
                 opacity: isZoomed ? 0 : 1,
                 transition: 'all 1.6s cubic-bezier(0.25, 1, 0.5, 1)'
               }}
